@@ -1,16 +1,23 @@
+declare interface PokemonPagination {
+  count: number;
+  next?: string;
+  previous?: string;
+  results: ExternalParameter[];
+}
+
 declare interface Stat {
-  name: String;
-  url: String;
+  name: string;
+  url: string;
 }
 
 declare interface Ability {
-  name: String;
-  url: String;
+  name: string;
+  url: string;
 }
 
 declare interface Type {
-  name: String;
-  url: String;
+  name: string;
+  url: string;
 }
 
 declare interface PokemonStats {
@@ -31,13 +38,14 @@ declare interface PokemonTypes {
 }
 
 declare interface Pokemon {
-  name: String;
+  name: string;
   id: number;
   types: PokemonTypes[];
   sprites: any;
   abilities: PokemonAbilities[];
   stats: PokemonStats[];
   game_indices: [];
+  species: ExternalParameter;
 }
 
 declare interface PokemonEvolution {
@@ -54,6 +62,10 @@ declare interface PokemonEvolutionChain {
 }
 
 declare interface ExternalParameter {
-  name: String;
-  url: String;
+  name?: string;
+  url: string;
+}
+
+declare interface PokemonSpecies {
+  evolution_chain: ExternalParameter;
 }

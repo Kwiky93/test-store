@@ -19,14 +19,18 @@
 
 <script lang="ts" setup>
 const props = defineProps<{
-  evolutionChain: String;
+  evolutionChainUrl: string;
 }>();
 
-const { data: evolution } = await useFetch(props.evolutionChain.url);
+console.log("EvolutionChain", props.evolutionChainUrl);
+
+const { data: evolution } = useFetch<PokemonEvolutionChain>(
+  props.evolutionChainUrl
+);
 
 const arrEvolution = computed(() => {
   const _arrEvolution = [];
-  let evolutionTo = evolution.value.chain as PokemonEvolution;
+  let evolutionTo = evolution.value?.chain || null;
   while (evolutionTo !== null) {
     _arrEvolution.push(evolutionTo.species);
     evolutionTo = evolutionTo.evolves_to[0] || null;

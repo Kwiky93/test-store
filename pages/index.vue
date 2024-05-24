@@ -7,12 +7,12 @@
 </template>
 
 <script lang="ts" setup>
-// let cards = ref<{}>(0);
-
-const { data } = await useFetch("https://pokeapi.co/api/v2/pokemon/");
+const { data } = useFetch<PokemonPagination>(
+  "https://pokeapi.co/api/v2/pokemon/"
+);
 
 const cards = computed(() => {
-  return data.value.results;
+  return data.value?.results;
 });
 </script>
 

@@ -28,58 +28,37 @@
 import { useRoute } from "vue-router";
 const route = useRoute();
 const props = defineProps<{
-  card: { name: String };
+  card: ExternalParameter;
 }>();
 
-const pokemon = ref<Pokemon>({
-  name: "",
-  types: [],
-  sprites: {},
-  abilities: [],
-  stats: [],
-  game_indices: [],
-  id: 0,
-});
+const { data: pokemon, error } = useFetch<Pokemon>(props.card.url);
 
-const name = computed<String>(() => {
-  return pokemon.value.name;
+const name = computed(() => {
+  return pokemon.value?.name;
 });
 
 const types = computed(() => {
-  const arrTypes = pokemon.value.types || [];
+  const arrTypes = pokemon.value?.types || [];
   return arrTypes.map((type) => type.type.name).join(", ");
 });
 
 const srcImage = computed(() => {
-  const arrSprites = pokemon.value.sprites || [];
+  const arrSprites = pokemon.value?.sprites || [];
   return arrSprites["front_default"];
 });
 
 const abilities = computed(() => {
-  const arrAbilities = pokemon.value.abilities || [];
+  const arrAbilities = pokemon.value?.abilities || [];
   return arrAbilities.map((ability) => ability.ability.name).join(", ");
 });
 
 const stats = computed(() => {
-  return pokemon.value.stats;
-});
-
-onMounted(async () => {
-  await fetch(`https://pokeapi.co/api/v2/pokemon/${props.card.name}`, {
-    method: "GET", //optional
-  })
-    .then(async (response) => {
-      const data = await response.json();
-      pokemon.value = data;
-    })
-    .catch((error) => {
-      return error;
-    });
+  return pokemon.value?.stats;
 });
 
 const clickCard = () => {
   navigateTo({
-    path: `pokemon/${pokemon.value.id}`,
+    path: `pokemon/${pokemon.value?.id}`,
   });
 };
 </script>

@@ -27,7 +27,8 @@
       </v-container>
 
       <v-divider></v-divider>
-      <Evolution :evolution-chain="species.evolution_chain"></Evolution>
+      <Evolution
+        :evolutionChainUrl="species?.evolution_chain.url || ''"></Evolution>
     </v-card>
   </v-container>
 </template>
@@ -36,51 +37,36 @@
 import { useRoute } from "vue-router";
 const route = useRoute();
 
-const { data: pokemon } = await useFetch(
+const { data: pokemon } = await useFetch<Pokemon>(
   `https://pokeapi.co/api/v2/pokemon/${route.params.idPokemon}`
 );
 
-const { data: species } = await useFetch(pokemon.value.species.url);
+const { data: species } = await useFetch<PokemonSpecies>(
+  pokemon.value?.species.url || ""
+);
 
-const name = computed<String>(() => {
-  const _name = pokemon.value.name;
+const name = computed(() => {
+  const _name = pokemon.value?.name;
   return _name && _name[0].toUpperCase() + _name.slice(1);
 });
 
-// const pokemonId = computed<number>(() => {
-//   return parseInt(route.params.idPokemon.toString());
-// });
-
 const types = computed(() => {
-  const arrTypes = pokemon.value.types || [];
+  const arrTypes = pokemon.value?.types || [];
   return arrTypes.map((type) => type.type.name).join(", ");
 });
 
 const srcImage = computed(() => {
-  const arrSprites = pokemon.value.sprites || [];
+  const arrSprites = pokemon.value?.sprites || [];
   return arrSprites["front_default"];
 });
 
 const abilities = computed(() => {
-  return pokemon.value.abilities;
+  return pokemon.value?.abilities;
 });
 
 const stats = computed(() => {
-  return pokemon.value.stats;
+  return pokemon.value?.stats;
 });
-
-// const species = computed(() => {
-//   return pokemon.value.species;
-// });
-
-// const evolutionChain = computed(async () => {
-//   const { data } = await useFetch(species.value.url);
-//   return await data;
-// });
-
-// const { data: species } = await useFetch(await pokemon.value.species.url);
-// console.log("Species", species.value);
-// const { data: species } = await useFetch(pokemon.value.species.url);
 </script>
 
 <style scoped></style>

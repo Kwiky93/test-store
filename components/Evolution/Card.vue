@@ -10,16 +10,16 @@
 
 <script lang="ts" setup>
 const props = defineProps<{
-  pokemonName: String;
+  pokemonName: string;
 }>();
 
-const { data, error } = await useFetch(
+const { data, error } = useFetch<Pokemon>(
   `https://pokeapi.co/api/v2/pokemon/${props.pokemonName}`
 );
 
 const srcImage = computed(() => {
-  const arrSprites = data.value.sprites || [];
-  return arrSprites["front_default"];
+  const arrSprites = data.value?.sprites || [];
+  return arrSprites["front_default"] || "";
 });
 </script>
 
