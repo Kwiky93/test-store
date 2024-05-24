@@ -27,13 +27,7 @@
       </v-container>
 
       <v-divider></v-divider>
-      <!-- <v-container>
-        <div class="v-row" v-for="stat in stats">
-          <span class="v-col pa-0"> {{ stat.stat.name }}</span>
-          <span class="v-col pa-0"> {{ stat.base_stat }}</span>
-        </div>
-      </v-container> -->
-      <Evolution :pokemon-id="pokemonId"></Evolution>
+      <Evolution :evolution-chain="species.evolution_chain"></Evolution>
     </v-card>
   </v-container>
 </template>
@@ -42,24 +36,20 @@
 import { useRoute } from "vue-router";
 const route = useRoute();
 
-const pokemon = ref<Pokemon>({
-  name: "",
-  types: [],
-  sprites: {},
-  abilities: [],
-  stats: [],
-  game_indices: [],
-  id: 0,
-});
+const { data: pokemon } = await useFetch(
+  `https://pokeapi.co/api/v2/pokemon/${route.params.idPokemon}`
+);
+
+const { data: species } = await useFetch(pokemon.value.species.url);
 
 const name = computed<String>(() => {
   const _name = pokemon.value.name;
   return _name && _name[0].toUpperCase() + _name.slice(1);
 });
 
-const pokemonId = computed<number>(() => {
-  return parseInt(route.params.idPokemon.toString());
-});
+// const pokemonId = computed<number>(() => {
+//   return parseInt(route.params.idPokemon.toString());
+// });
 
 const types = computed(() => {
   const arrTypes = pokemon.value.types || [];
@@ -79,19 +69,18 @@ const stats = computed(() => {
   return pokemon.value.stats;
 });
 
-onMounted(async () => {
-  await fetch(`https://pokeapi.co/api/v2/pokemon/${route.params.idPokemon}`, {
-    method: "GET", //optional
-  })
-    .then(async (response) => {
-      const data = await response.json();
-      console.log("data", data);
-      pokemon.value = data;
-    })
-    .catch((error) => {
-      return error;
-    });
-});
+// const species = computed(() => {
+//   return pokemon.value.species;
+// });
+
+// const evolutionChain = computed(async () => {
+//   const { data } = await useFetch(species.value.url);
+//   return await data;
+// });
+
+// const { data: species } = await useFetch(await pokemon.value.species.url);
+// console.log("Species", species.value);
+// const { data: species } = await useFetch(pokemon.value.species.url);
 </script>
 
 <style scoped></style>

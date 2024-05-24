@@ -52,3 +52,8 @@ declare interface PokemonEvolutionChain {
   chain: PokemonEvolution;
   id: number;
 }
+
+declare interface ExternalParameter {
+  name: String;
+  url: String;
+}

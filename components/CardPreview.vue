@@ -70,7 +70,6 @@ onMounted(async () => {
   })
     .then(async (response) => {
       const data = await response.json();
-      console.log("data", data);
       pokemon.value = data;
     })
     .catch((error) => {
@@ -79,7 +78,6 @@ onMounted(async () => {
 });
 
 const clickCard = () => {
-  console.log("Pokemon", pokemon.value.id);
   navigateTo({
     path: `pokemon/${pokemon.value.id}`,
   });

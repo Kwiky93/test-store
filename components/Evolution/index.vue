@@ -19,16 +19,14 @@
 
 <script lang="ts" setup>
 const props = defineProps<{
-  pokemonId: number;
+  evolutionChain: String;
 }>();
 
-const { data, error } = await useFetch<PokemonEvolutionChain>(
-  `https://pokeapi.co/api/v2/evolution-chain/${props.pokemonId}`
-);
+const { data: evolution } = await useFetch(props.evolutionChain.url);
 
 const arrEvolution = computed(() => {
   const _arrEvolution = [];
-  let evolutionTo = data.value.chain as PokemonEvolution;
+  let evolutionTo = evolution.value.chain as PokemonEvolution;
   while (evolutionTo !== null) {
     _arrEvolution.push(evolutionTo.species);
     evolutionTo = evolutionTo.evolves_to[0] || null;
